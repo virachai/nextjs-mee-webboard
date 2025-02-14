@@ -19,3 +19,8 @@ body {
   background: var(--background); */
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.search_post:focus-within ~ .community_post,
+.search_post:focus-within ~ .btn_create_post {
+  @apply hidden md:flex;
+}

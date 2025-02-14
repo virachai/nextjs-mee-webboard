@@ -38,10 +38,11 @@ export default function MobileNavbar() {
             <DropdownMenuItem key={link.id} className="cursor-pointer">
               <Link
                 href={link.href}
-                className="w-full"
+                className="flex flex-row items-stretch w-full"
                 onClick={handleLinkClick}
               >
-                {link.name}
+                {link.icon && <link.icon className="mr-2 w-6 text-gray-300" />}
+                <span className="text-base">{link.name}</span>
               </Link>
             </DropdownMenuItem>
           ))}

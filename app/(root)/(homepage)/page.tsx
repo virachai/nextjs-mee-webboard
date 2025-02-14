@@ -1,11 +1,49 @@
-// import Image from "next/image";
+// import Pagination from "@/app/ui/invoices/pagination";
+import Search from "@/app/components/ui/search";
+// import Table from "@/app/ui/invoices/table";
+import { CreatePost } from "@/app/components/ui/homepage/buttons";
+import CommunityDropdown from "@/app/components/ui/community-dropdown";
+// import { lusitana } from "@/app/ui/fonts";
+// import { InvoicesTableSkeleton } from "@/app/ui/skeletons";
+// import { Suspense } from "react";
+// import { fetchInvoicesPages } from "@/app/lib/data";
+// D:\DEV\DataWow\nextjs-mee-webboard\app\components\ui\blog\post-list.tsx
+import PostList from "@/app/components/Post/PostList";
 
-export default function Home() {
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "a Board",
+};
+
+export default async function Page(props: {
+  searchParams?: Promise<{
+    query?: string;
+    page?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || "";
+  const currentPage = Number(searchParams?.page) || 1;
+
+  console.log(query, currentPage);
+
+  // const totalPages = await fetchInvoicesPages(query);
+
   return (
-    <div className="justify-items-center items-center gap-16 grid grid-rows-[20px_1fr_20px] p-8 sm:p-20 pb-20 min-h-screen font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col items-center sm:items-start gap-8 row-start-2">
-        Main
-      </main>
+    <div className="w-full">
+      <div className="flex justify-between items-center gap-2">
+        <Search placeholder="Search" />
+        <CommunityDropdown />
+        <CreatePost />
+      </div>
+      <PostList />
+      {/* <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
+        <Table query={query} currentPage={currentPage} />
+      </Suspense>
+      <div className="flex justify-center mt-5 w-full">
+        <Pagination totalPages={totalPages} />
+      </div> */}
     </div>
   );
 }
