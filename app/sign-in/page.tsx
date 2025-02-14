@@ -56,7 +56,7 @@ export default function Page() {
 
           {/* Login form section */}
           <div className="flex flex-1 justify-center items-center px-4 min-h-[50dvh] md:min-h-screen">
-            <div className="w-full min-w-[300px] max-w-[340px] md:max-w-[384px] md:min-h-[300px]">
+            <div className="w-full min-w-[300px] sm:max-w-[340px] md:max-w-[384px] md:min-h-[300px]">
               <h1 className="mb-10 font-semibold text-white text-2xl">
                 Sign in
               </h1>
@@ -68,7 +68,7 @@ export default function Page() {
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       placeholder="Username"
-                      className="bg-[#F9F9F9] px-3.5 border border-[#DADADA] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#49A569] w-full h-11 text-base"
+                      className="bg-[#F9F9F9] px-3.5 border border-[#DADADA] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#49A569] w-full h-11 text-black text-base"
                     />
                   </div>
                 </div>

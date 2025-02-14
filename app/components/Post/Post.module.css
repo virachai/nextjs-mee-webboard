@@ -1,0 +1,37 @@
+/* Post.module.css */
+.containerLink {
+  overflow: hidden;
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.imageContainer {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.containerLink:hover h2 {
+  color: #567;
+}
+
+.postImage {
+  width: 100%;
+  /* height: auto; */
+  aspect-ratio: 3 / 2; /* 1.5:1 aspect ratio (3:2) */
+}
+
+.title {
+  font-size: 1.5em;
+  margin: 10px;
+}
+
+.info {
+  font-size: 0.9em;
+  color: #567;
+  margin: 10px;
+}
+
+.summary {
+  margin: 10px;
+}

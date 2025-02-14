@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
+.container {
+  max-width: 100%;
+  color: black;
+  padding-bottom: 25px;
+  padding-top: 25px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footer {
+  background-color: #eef2ff;
+  padding: 70px 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.button {
+  border: 0;
+  padding: 10px;
+  background-color: #574ae2;
+  color: white;
+  margin: 10px;
+}
+
+.input {
+  border: 0;
+  padding: 10px;
+}
+
+.accent {
+  color: #574ae2;
+}
+
+@font-face {
+  font-family: "SpaceMono";
+  src: local("SpaceMonoBold"), url(/fonts/SpaceMono-Bold.ttf) format("truetype");
+}
+
+.spaceMono {
+  font-family: "SpaceMono";
+  color: black;
+  font-size: 3rem;
+}
+
+.nunito {
+  font-family: "Nunito";
+}
