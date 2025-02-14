@@ -35,30 +35,28 @@ export default function Page() {
 
   if (1)
     return (
-      <div className="bg-[#243831] min-h-screen">
-        {/* Mobile-first layout */}
-        <div className="relative md:flex w-full h-full">
-          {/* Top section with logo - mobile */}
-          <div className="md:hidden bg-[#2B5F44] rounded-b-[36px] h-[362px]">
-            <div className="flex flex-col items-center pt-[76px]">
-              <div className="relative w-[171px] h-[131px]">
+      <div className="md:flex-col-reverse bg-[#243831] h-dvw min-h-screen">
+        <div className="relative md:flex md:flex-row-reverse w-full h-full">
+          <div className="bg-[#2B5F44] rounded-b-[24px] md:rounded-l-[36px] w-full md:max-w-[50%] lg:max-w-[632px] md:min-h-screen">
+            <div className="flex md:flex-col justify-center items-center h-full min-h-[50dvh]">
+              <div className="relative w-[299px] h-[230px]">
                 <Image
-                  src="/api/placeholder/171/131"
+                  src={notebookImage}
                   alt="Notebook with pencil"
-                  width={171}
-                  height={131}
+                  width={299}
+                  height={230}
                   className="object-contain"
                 />
               </div>
-              <p className="mt-7 font-['Castoro'] text-white text-2xl italic">
+              <p className="hidden md:block mt-7 font-['Castoro'] text-[28px] text-white italic">
                 a Board
               </p>
             </div>
           </div>
 
           {/* Login form section */}
-          <div className="md:flex md:flex-1 md:justify-center md:items-center px-4 min-h-screen">
-            <div className="w-full max-w-[384px] md:min-h-[300px]">
+          <div className="flex flex-1 justify-center items-center px-4 min-h-[50dvh] md:min-h-screen">
+            <div className="w-full min-w-[300px] max-w-[340px] md:max-w-[384px] md:min-h-[300px]">
               <h1 className="mb-10 font-semibold text-white text-2xl">
                 Sign in
               </h1>
@@ -78,24 +76,6 @@ export default function Page() {
                   Sign In
                 </button>
               </div>
-            </div>
-          </div>
-
-          {/* Desktop right section */}
-          <div className="hidden md:block bg-[#2B5F44] rounded-b-[24px] md:rounded-l-[36px] md:w-full md:max-w-[632px]">
-            <div className="flex flex-col justify-center items-center h-full">
-              <div className="relative w-[299px] h-[230px]">
-                <Image
-                  src={notebookImage}
-                  alt="Notebook with pencil"
-                  width={299}
-                  height={230}
-                  className="object-contain"
-                />
-              </div>
-              <p className="mt-7 font-['Castoro'] text-[28px] text-white italic">
-                a Board
-              </p>
             </div>
           </div>
         </div>
