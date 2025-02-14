@@ -62,13 +62,14 @@ const CommentAction = ({
           isFormVisible ? "block" : "hidden"
         }`}
       >
-        <div className="bg-white p-6 rounded-lg w-11/12 md:w-[400px]">
+        <div className="relative flex flex-col gap-y-4 bg-white p-6 rounded-lg w-11/12 md:w-[400px]">
           <button
             onClick={toggleForm}
             className="top-3 right-3 absolute text-gray-500 hover:text-gray-700"
           >
             X
           </button>
+          <h3>Add Comment</h3>
           <form onSubmit={handleSubmit}>
             <textarea
               value={comment}
@@ -77,7 +78,14 @@ const CommentAction = ({
               className="p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 w-full"
               rows={4}
             />
-            <div className="flex justify-end mt-4">
+            <div className="flex flex-col gap-y-4 mt-4">
+              <button
+                type="button"
+                onClick={toggleForm}
+                className="hover:bg-gray-100 px-6 py-2 border-2 border-gray-500 rounded-lg text-gray-500 transition-colors"
+              >
+                Cancel
+              </button>
               <button
                 type="submit"
                 disabled={!comment}

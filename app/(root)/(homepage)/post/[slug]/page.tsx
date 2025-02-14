@@ -43,11 +43,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function Page({ params }: PageProps) {
   const slug = (await params).slug;
   const post = POSTS_BY_SLUG[slug];
   const content = CONTENTS_BY_SLUG[slug];
