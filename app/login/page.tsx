@@ -1,0 +1,149 @@
+"use client";
+
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import Image from "next/image";
+import notebookImage from "@/public/notebook-with-pencil.png";
+
+interface Errors {
+  username?: string;
+}
+
+export default function Page() {
+  const [username, setUsername] = useState<string>("");
+  const [errors, setErrors] = useState<Errors>({});
+
+  const handleLogin = (e: FormEvent) => {
+    e.preventDefault();
+    const validationErrors: Errors = {};
+
+    if (!username) {
+      validationErrors.username = "Username is required";
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    // Handle the login logic here
+    console.log("Logging in with", username);
+  };
+
+  const handleChangeUsername = (e: ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  if (1)
+    return (
+      <div className="bg-[#243831] min-h-screen">
+        {/* Mobile-first layout */}
+        <div className="relative md:flex w-full h-full">
+          {/* Top section with logo - mobile */}
+          <div className="md:hidden bg-[#2B5F44] rounded-b-[36px] h-[362px]">
+            <div className="flex flex-col items-center pt-[76px]">
+              <div className="relative w-[171px] h-[131px]">
+                <Image
+                  src="/api/placeholder/171/131"
+                  alt="Notebook with pencil"
+                  width={171}
+                  height={131}
+                  className="object-contain"
+                />
+              </div>
+              <p className="mt-7 font-['Castoro'] text-white text-2xl italic">
+                a Board
+              </p>
+            </div>
+          </div>
+
+          {/* Login form section */}
+          <div className="md:flex md:flex-1 md:justify-center md:items-center px-4 min-h-screen">
+            <div className="w-full max-w-[384px] md:min-h-[300px]">
+              <h1 className="mb-10 font-semibold text-white text-2xl">
+                Sign in
+              </h1>
+              <div className="space-y-5">
+                <div className="w-full">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder="Username"
+                      className="bg-[#F9F9F9] px-3.5 border border-[#DADADA] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#49A569] w-full h-11 text-base"
+                    />
+                  </div>
+                </div>
+                <button className="bg-[#49A569] hover:bg-[#3d8d59] shadow-sm rounded-lg w-full h-10 font-semibold text-white text-sm transition-colors">
+                  Sign In
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop right section */}
+          <div className="hidden md:block bg-[#2B5F44] rounded-b-[24px] md:rounded-l-[36px] md:w-full md:max-w-[632px]">
+            <div className="flex flex-col justify-center items-center h-full">
+              <div className="relative w-[299px] h-[230px]">
+                <Image
+                  src={notebookImage}
+                  alt="Notebook with pencil"
+                  width={299}
+                  height={230}
+                  className="object-contain"
+                />
+              </div>
+              <p className="mt-7 font-['Castoro'] text-[28px] text-white italic">
+                a Board
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile home indicator */}
+        {/* <div className="md:hidden bottom-0 left-0 absolute flex justify-center items-center w-full h-[34px]">
+          <div className="bg-[#BBC2C0] rounded-full w-[134px] h-[5px]" />
+        </div> */}
+      </div>
+    );
+
+  if (0)
+    return (
+      <div className="flex justify-center items-center bg-gray-100 min-h-screen">
+        <div className="bg-white shadow-lg p-8 rounded-lg w-full max-w-md">
+          <h1 className="mb-4 font-bold text-2xl">Login Page</h1>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label
+                htmlFor="username"
+                className="block mb-2 font-medium text-gray-700 text-sm"
+              >
+                Username:
+                {errors.username && (
+                  <p className="inline-block float-right mt-1 text-red-500 text-sm">
+                    {errors.username}
+                  </p>
+                )}
+              </label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={handleChangeUsername}
+                className={`w-full rounded-md border border-gray-300 p-2`}
+                required
+                pattern="\w{3,16}"
+                title="Username: (3-16 characters)"
+              />
+            </div>
+            <button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md w-full text-white"
+            >
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+}
