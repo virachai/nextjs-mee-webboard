@@ -21,7 +21,7 @@ export default function MobileNavbar() {
   };
 
   return (
-    <div className="md:hidden right-0 bottom-0 left-0 z-50">
+    <div className="md:hidden top-0 right-0 bottom-0 left-0 z-50">
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <div className="hover:bg-slate-700 p-1 rounded-sm text-gray-300 transition cursor-pointer">
@@ -29,7 +29,11 @@ export default function MobileNavbar() {
           </div>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuContent
+          className="top-0 right-0 fixed space-y-4 bg-[#243831] p-4 w-[280px] text-white"
+          align="end"
+          forceMount
+        >
           {links.map((link) => (
             <DropdownMenuItem key={link.id} className="cursor-pointer">
               <Link

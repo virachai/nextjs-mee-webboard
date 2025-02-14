@@ -7,9 +7,6 @@ type linkProps = {
 };
 
 export const links: linkProps[] = [
-  { id: uuid(), name: "Home", href: "/home" },
-  { id: uuid(), name: "Tv Shows", href: "/home/shows" },
-  { id: uuid(), name: "New & Popular", href: "/home/latest" },
-  { id: uuid(), name: "Movies", href: "/home/movies" },
-  { id: uuid(), name: "My List", href: "/home/list" },
+  { id: uuid(), name: "Home", href: "/" },
+  { id: uuid(), name: "Our Blog", href: "/blog" },
 ];
