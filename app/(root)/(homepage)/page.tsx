@@ -31,7 +31,7 @@ export default async function Page(props: {
   // const totalPages = await fetchInvoicesPages(query);
 
   return (
-    <div className="w-full">
+    <div className="bg-[#BBC2C0] md:p-6 px-4 py-12 w-full">
       <div className="flex justify-between items-center gap-2">
         <Search placeholder="Search" />
         <CommunityDropdown />

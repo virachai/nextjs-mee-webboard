@@ -14,9 +14,7 @@ export default function DashboardLayout({
         <div className="flex-none w-full md:w-64">
           <SideNav />
         </div>
-        <div className="flex-grow md:p-6 px-4 py-12 md:overflow-y-auto">
-          {children}
-        </div>
+        <div className="flex-grow bg-white md:overflow-y-auto">{children}</div>
       </div>
       {/* <Footer /> */}
     </>
