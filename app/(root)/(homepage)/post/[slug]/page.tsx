@@ -61,7 +61,7 @@ export default async function Page({
       {/* Back Button */}
       <Link
         href="/"
-        className="flex justify-center items-center bg-mint-100 hover:bg-mint-200 rounded-full w-12 h-12 text-gray-600 transition-colors"
+        className="flex justify-center items-center bg-[#D8E9E4] hover:bg-[#B0D1C1] rounded-full w-12 h-12 text-gray-600 transition-colors"
       >
         <ArrowLeft />
       </Link>
