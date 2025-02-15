@@ -5,6 +5,7 @@ import { X, ChevronDown, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { tagData } from "@/app/components/ui/community-dropdown";
 import { useSession } from "next-auth/react";
+import axios from "axios"; // Import axios
 
 interface PostFormProps {
   slug?: string;
@@ -36,12 +37,12 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
     if (slug) {
       const fetchPostData = async () => {
         try {
-          const response = await fetch(`${baseApiUrl}/aboard/posts/${slug}`);
-          if (!response.ok) throw new Error("Failed to fetch post data");
-          const data = await response.json();
-          setTitle(data.title);
-          setContent(data.content);
-          setTags(data.tags);
+          const response = await axios.get(
+            `${baseApiUrl}/aboard/posts/${slug}`
+          );
+          setTitle(response.data.title);
+          setContent(response.data.content);
+          setTags(response.data.tags);
         } catch (error) {
           setError("Error fetching post data. Please try again.");
           console.error(error);
@@ -87,13 +88,14 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
       : `${baseApiUrl}/aboard/posts`;
 
     try {
-      const response = await fetch(url, {
+      const response = await axios({
         method,
+        url,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postPayload),
+        data: postPayload,
       });
-
-      if (!response.ok) throw new Error("Failed to submit post");
+      console.log(response.status);
+      // if (response.status !== 200) throw new Error("Failed to submit post");
 
       onClose();
       router.push(slug ? `/post/${slug}` : "/");

@@ -50,7 +50,7 @@ export default function SignInPage() {
       setErrors({ username: "Invalid username or password" });
     } else {
       // Handle success (you can redirect or show a success message)
-      console.log("Logged in successfully", result);
+      // console.log("Logged in successfully", result);
       window.location.href = "/post";
     }
   };
