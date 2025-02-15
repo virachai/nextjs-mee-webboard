@@ -18,8 +18,7 @@ export default async function Page(props: {
   const searchParams = await props.searchParams;
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
-
-  console.log(query, currentPage);
+  if (0) console.log(query, currentPage);
 
   return (
     <div className="bg-[#BBC2C0] md:p-6 px-4 py-12 w-full">

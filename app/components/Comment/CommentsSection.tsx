@@ -5,20 +5,37 @@ import { useState } from "react";
 import CommentList from "./CommentList";
 import CommentAction from "./CommentAction";
 
+interface Comment {
+  id: string;
+  author: string;
+  timeAgo: string;
+  content: string;
+  likes?: number;
+  replies?: Comment[];
+}
+
+interface CommentsSectionProps {
+  postId?: string;
+  initialComments?: Comment[];
+}
+
 const MOCK_COMMENTS = [
   {
+    id: "1",
     author: "Wittawat98",
     timeAgo: "12h ago",
     content:
       "Lorem ipsum dolor sit amet consectetur. Purus cursus vel est a pretium quam imperdiet.",
   },
   {
+    id: "2",
     author: "Hawaii51",
     timeAgo: "1mo. ago",
     content:
       "Lorem ipsum dolor sit amet consectetur. Purus cursus vel est a pretium quam imperdiet.",
   },
   {
+    id: "3",
     author: "Helo_re",
     timeAgo: "3mo. ago",
     content:
@@ -26,7 +43,10 @@ const MOCK_COMMENTS = [
   },
 ];
 
-const CommentsSection = () => {
+const CommentsSection = ({
+  postId,
+  initialComments = MOCK_COMMENTS,
+}: CommentsSectionProps) => {
   const [isFormVisible, setIsFormVisible] = useState(false);
 
   const toggleForm = () => {
@@ -36,7 +56,7 @@ const CommentsSection = () => {
   return (
     <div className="mt-8">
       <h2 className="mb-6 font-semibold text-xl">
-        {MOCK_COMMENTS.length} Comments
+        {MOCK_COMMENTS.length} Comments {postId}
       </h2>
 
       {/* Add Comment Button */}
@@ -55,7 +75,7 @@ const CommentsSection = () => {
       )}
 
       {/* Pass MOCK_COMMENTS to CommentList as a prop */}
-      <CommentList comments={MOCK_COMMENTS} />
+      <CommentList comments={initialComments} />
     </div>
   );
 };

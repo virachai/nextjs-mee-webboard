@@ -49,7 +49,7 @@ interface SheetTriggerProps {
 }
 
 export function SheetTrigger({ asChild, children }: SheetTriggerProps) {
-  console.log(asChild);
+  if (0) console.log(asChild);
   return <>{children}</>;
 }
 

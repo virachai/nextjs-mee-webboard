@@ -1,95 +1,120 @@
-// pages/post/[slug]/page.tsx
-
-import React from "react";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { POSTS_BY_SLUG } from "@/app/data/postData";
-import { CONTENTS_BY_SLUG } from "@/app/data/postContentData";
 import Image from "next/image";
-import type { Metadata } from "next";
-import styles from "./page.module.css";
+import { notFound } from "next/navigation";
 import CommentsSection from "@/app/components/Comment/CommentsSection";
+import AvataThumbnail from "@/public/avatar_placeholder.jpg";
+import { format } from "timeago.js";
 
-type PageProps = {
-  params: Promise<{ slug: string }>;
-};
-
-export async function generateMetadata({
+export default async function Page({
   params,
-}: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const post = POSTS_BY_SLUG[slug];
-  const content = CONTENTS_BY_SLUG[slug];
-
-  if (!post || !content) {
-    return {
-      title: "Post not found",
-      description: "This post could not be found.",
-    };
-  }
-
-  return {
-    title: post.title,
-    description: post.summary || "No description available.",
-    openGraph: {
-      title: post.title,
-      description: post.summary,
-      images: ["https://images.unsplash.com/photo-1621193793262-4127d9855c91"],
-    },
-    twitter: {
-      card: "summary_large_image",
-      images: ["https://images.unsplash.com/photo-1621193793262-4127d9855c91"],
-    },
-  };
-}
-
-export default async function Page({ params }: PageProps) {
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const slug = (await params).slug;
-  const post = POSTS_BY_SLUG[slug];
-  const content = CONTENTS_BY_SLUG[slug];
 
-  if (!post) {
-    throw new Error(`Post not found for slug: ${slug}`);
+  try {
+    const baseApiUrl =
+      process.env.NEXT_PUBLIC_BASE_API || "http://localhost:4000";
+
+    const response = await fetch(`${baseApiUrl}/aboard/posts/${slug}`, {
+      next: { revalidate: 3600 }, // Cache for 1 hour
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        notFound();
+      }
+      throw new Error(`Failed to fetch post: ${response.statusText}`);
+    }
+
+    const post = await response.json();
+
+    return (
+      <main className="mx-auto px-4 py-8 max-w-3xl">
+        {/* Back Button */}
+        <Link
+          href="/"
+          className="inline-flex justify-center items-center bg-[#D8E9E4] hover:bg-[#B0D1C1] rounded-full w-12 h-12 text-gray-600 transition-all duration-200"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
+
+        {/* Author Section */}
+        <div className="flex items-center gap-3 mt-6">
+          <div className="relative bg-gray-200 rounded-full w-12 h-12 overflow-hidden">
+            <Image
+              src={AvataThumbnail}
+              alt={`${post.username}'s avatar`}
+              fill
+              sizes="48px"
+              className="object-cover"
+              priority
+            />
+          </div>
+          <div className="flex sm:flex-row flex-col sm:items-center gap-1 sm:gap-2">
+            <span className="font-medium text-lg">{post.username}</span>
+            <time className="text-gray-500 text-sm">
+              {/* {new Date(post.updatedAt).toLocaleDateString()} */}
+              {format(post.updatedAt)} {/* Display time ago */}
+            </time>
+          </div>
+        </div>
+
+        {/* Tags Section (replaces 'Uncategorized') */}
+        <div className="mt-4">
+          {post.tags?.length ? (
+            <div className="inline-flex flex-wrap gap-2">
+              {post.tags.map((tag: string, index: number) => (
+                <span
+                  key={index}
+                  className="inline-block bg-gray-100 px-4 py-1 rounded-full text-gray-600 text-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <span className="inline-block bg-gray-100 px-4 py-1 rounded-full text-gray-600 text-sm">
+              Uncategorized
+            </span>
+          )}
+        </div>
+
+        {/* Post Content */}
+        <article className="mt-6">
+          <h1 className="mb-6 font-bold text-gray-900 text-3xl">
+            {post.title}
+          </h1>
+          <div className="max-w-none prose prose-gray">{post.content}</div>
+        </article>
+
+        {/* Comments */}
+        <section className="mt-12">
+          <CommentsSection postId={post._id} />
+        </section>
+      </main>
+    );
+  } catch (error) {
+    // Error boundary fallback
+    if (error)
+      return (
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="text-center">
+            <h2 className="mb-2 font-bold text-gray-900 text-2xl">
+              Something went wrong
+            </h2>
+            <p className="text-gray-600">
+              We couldn&apos;t load this post. Please try again later.
+            </p>
+            <Link
+              href="/"
+              className="inline-block mt-4 text-blue-600 hover:underline"
+            >
+              Return to home
+            </Link>
+          </div>
+        </div>
+      );
   }
-
-  return (
-    <div className={styles.container}>
-      {/* Back Button */}
-      <Link
-        href="/"
-        className="flex justify-center items-center bg-[#D8E9E4] hover:bg-[#B0D1C1] rounded-full w-12 h-12 text-gray-600 transition-colors"
-      >
-        <ArrowLeft />
-      </Link>
-
-      {/* Author Section */}
-      <div className="flex items-center gap-3 mt-6">
-        <div className="relative bg-gray-200 rounded-full w-12 h-12 overflow-hidden">
-          <Image
-            src="https://via.assets.so/img.jpg?w=48&h=48"
-            alt={`${post.author}'s avatar`}
-            className="w-full h-full object-cover"
-            width={48}
-            height={48}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="font-medium text-lg">{post.author}</span>
-          <span className="text-gray-500">{post.publishDate}</span>
-        </div>
-      </div>
-
-      {/* Category */}
-      <div className="inline-block bg-gray-100 mt-4 px-4 py-1 rounded-full text-gray-600">
-        Uncategorized
-      </div>
-
-      {/* Title & Content */}
-      <h1 className="mt-4 font-bold text-gray-900 text-3xl">{post.title}</h1>
-      <div className="mt-4 text-gray-700 leading-relaxed">{content?.copy}</div>
-
-      {/* Comments Section */}
-      <CommentsSection />
-    </div>
-  );
 }

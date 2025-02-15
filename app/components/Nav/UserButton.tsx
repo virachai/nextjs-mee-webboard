@@ -1,5 +1,4 @@
 import { getServerSession } from "next-auth";
-
 import {
   Avatar,
   AvatarFallback,
@@ -17,6 +16,14 @@ import { authOptions } from "@/app/lib/authOptions";
 import UserSignOutButton from "./UserSignOutButton";
 import Link from "next/link";
 
+// Define the type for the user in the session
+interface CustomUser {
+  id: number;
+  name: string;
+  email: string;
+  image: string;
+}
+
 export default async function UserButton() {
   const session = await getServerSession(authOptions);
 
@@ -30,8 +37,10 @@ export default async function UserButton() {
     );
   }
 
-  const avatarSrc = session.user?.image || "/avatar.png";
-  const userShortName = session.user?.name?.slice(0, 2) || "anonymous";
+  // Assuming the session object has the correct structure now
+  const user = session.user as CustomUser;
+  const avatarSrc = user?.image || "/avatar.png";
+  const userShortName = user?.name ? user?.name.slice(0, 2) : "anonymous";
 
   return (
     <DropdownMenu>
@@ -54,10 +63,10 @@ export default async function UserButton() {
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-2">
             <p className="font-medium text-sm leading-none">
-              {session?.user?.name || userShortName}
+              {user?.name || userShortName}
             </p>
             <p className="text-muted-foreground text-xs leading-none">
-              {session?.user?.email || "mail@exam.com"}
+              {user?.email || "mail@exam.com"}
             </p>
           </div>
         </DropdownMenuLabel>

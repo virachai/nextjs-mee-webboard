@@ -14,6 +14,7 @@ interface CustomSession extends Session {
     lastName: string;
     gender: string;
     image: string;
+    name: string;
   };
 }
 
@@ -25,10 +26,12 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         try {
-          // Call your custom /api/auth/login API route
-          const res = await fetch(`https://dummyjson.com/auth/login`, {
+          const baseApiUrl =
+            process.env.NEXT_PUBLIC_BASE_API || "http://localhost:4000";
+
+          const res = await fetch(`${baseApiUrl}/aboard/auth`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -40,8 +43,7 @@ export const authOptions: NextAuthOptions = {
           });
 
           const data = await res.json();
-
-          // If the login is successful and we have the access token, return the user data
+          if (1) console.log("dummyjson", data, req);
           if (res.ok && data?.accessToken) {
             return {
               id: data.id,
@@ -53,9 +55,9 @@ export const authOptions: NextAuthOptions = {
               lastName: data.lastName,
               gender: data.gender,
               image: data.image,
+              name: data.username,
             };
           } else {
-            // Throw an error if authentication fails
             throw new Error("Authentication failed. Please try again.");
           }
         } catch (error) {
@@ -71,35 +73,16 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.accessToken;
-        token.refreshToken = account.refreshToken;
-        token.user = {
-          id: account.id,
-          username: account.username,
-          email: account.email,
-          firstName: account.firstName,
-          lastName: account.lastName,
-          gender: account.gender,
-          image: account.image,
-        };
+      if (0) {
+        console.log("jwt account: ", account);
       }
       return token;
     },
     async session({ session, token }) {
-      // Add the accessToken, refreshToken, and user details to the session object
       const customSession = session as CustomSession;
       customSession.accessToken = token.accessToken as string;
       customSession.refreshToken = token.refreshToken as string;
-      customSession.user = token.user as {
-        id: number;
-        username: string;
-        email: string;
-        firstName: string;
-        lastName: string;
-        gender: string;
-        image: string;
-      };
+
       return customSession;
     },
   },

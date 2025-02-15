@@ -26,7 +26,7 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
   useEffect(() => {
     if (slug) {
       setPostData(null);
-      console.log(slug, postData);
+      if (0) console.log(slug, postData);
       // Fetch the existing post data if the slug is provided (edit mode)
       // Example fetch (uncomment when implementing fetching logic):
       // fetch(`/api/posts/${slug}`)
@@ -77,7 +77,7 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="font-bold text-2xl">
-            {slug ? "Edit Post" : "Create Post"} - {slug}
+            {slug ? "Edit Post" : "Create Post"}
           </h2>
           <button
             onClick={onClose}
@@ -90,41 +90,43 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4 p-4">
           {/* Community Dropdown */}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setShowCommunities(!showCommunities)}
-              className="flex justify-between items-center p-3 border hover:border-green-500 rounded-lg w-full sm:w-64 text-gray-600 text-left transition-colors"
-            >
-              {selectedCommunity || "Choose a community"}
-              <ChevronDown
-                size={20}
-                className={`transition-transform ${
-                  showCommunities ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+          {!slug && (
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShowCommunities(!showCommunities)}
+                className="flex justify-between items-center p-3 border hover:border-green-500 rounded-lg w-full md:w-64 text-gray-600 md:text-left transition-colors"
+              >
+                <p className="md:text-left grow">
+                  {selectedCommunity || "Choose a community"}
+                </p>
+                <ChevronDown
+                  size={20}
+                  className={`transition-transform ${
+                    showCommunities ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-            {!slug && showCommunities && (
-              <div className="z-10 absolute bg-white shadow-lg mt-1 border rounded-lg w-full sm:w-64">
-                {tagData.map((community) => (
-                  <button
-                    key={community.id}
-                    type="button"
-                    className="hover:bg-gray-50 p-3 first:rounded-t-lg last:rounded-b-lg w-full text-left transition-colors"
-                    onClick={() => {
-                      setSelectedCommunity(community.label); // Use community.label instead of community.name
-                      setShowCommunities(false);
-                    }}
-                  >
-                    {community.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Title Input */}
+              {showCommunities && (
+                <div className="z-10 absolute bg-white shadow-lg mt-1 border rounded-lg w-full md:w-64">
+                  {tagData.map((community) => (
+                    <button
+                      key={community.id}
+                      type="button"
+                      className="hover:bg-gray-50 p-3 first:rounded-t-lg last:rounded-b-lg w-full text-left transition-colors"
+                      onClick={() => {
+                        setSelectedCommunity(community.label); // Use community.label instead of community.name
+                        setShowCommunities(false);
+                      }}
+                    >
+                      {community.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
           <input
             type="text"
             placeholder="Title"
