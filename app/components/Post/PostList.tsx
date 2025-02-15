@@ -5,6 +5,7 @@ import AvataThumbnail from "@/public/avatar_placeholder.jpg";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Post as PostType } from "@/app/data/postData";
+import { useSession } from "next-auth/react";
 
 export default function PostList() {
   const pathname = usePathname();
@@ -13,6 +14,11 @@ export default function PostList() {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Using useSession hook to get the session
+  const { data: session } = useSession();
+
+  console.log("session ", session);
 
   // Fetch the posts from the API
   useEffect(() => {
@@ -37,8 +43,9 @@ export default function PostList() {
     fetchPosts();
   }, []);
 
+  const username = session?.user?.name as string;
   const filteredItems = pathname.includes("/post")
-    ? posts.filter((item) => item?.username.includes("Emma"))
+    ? posts.filter((item) => item?.username.includes(username))
     : posts;
 
   if (loading) {
