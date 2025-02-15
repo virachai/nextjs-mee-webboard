@@ -1,7 +1,7 @@
 // app/components/Nav/Nav.tsx
 import Link from "next/link";
-import { Button } from "@/app/components/ui/button";
 import MobileNavbar from "./MobileNavbar";
+import UserButton from "./UserButton";
 
 export default function Nav() {
   return (
@@ -11,12 +11,10 @@ export default function Nav() {
         a Board
       </Link>
 
-      <MobileNavbar />
-
-      {/* Sign In Button */}
-      <Button className="hidden md:flex bg-[#49A569] hover:bg-[#45a049] shadow-[0px_1px_2px_rgba(16,24,40,0.05)] px-6 py-2 rounded-md text-white">
-        <Link href="/sign-in">Sign In</Link>
-      </Button>
+      <div className="flex items-center gap-x-8">
+        <MobileNavbar />
+        <UserButton />
+      </div>
     </nav>
   );
 }
