@@ -1,16 +1,16 @@
 import PostSection from "@/app/components/Post/PostSection";
-import EditPost from "@/app/components/Post/EditPost";
+import PostAction from "@/app/components/Post/PostAction";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Edit Post",
 };
 
-export default async function Page() {
+export default function Page() {
   return (
     <div>
       <PostSection />
-      <EditPost />
+      <PostAction />
     </div>
   );
 }

@@ -16,12 +16,11 @@ export default function Search({ placeholder }: { placeholder: string }) {
     if (term) {
       params.set("query", term);
       params.set("page", "1");
-      replace(`${pathname}?${params.toString()}`);
     } else {
       params.delete("query");
       params.delete("page");
-      replace(`${pathname}`);
     }
+    replace(`${pathname}?${params.toString()}`);
   }, 300);
 
   return (
