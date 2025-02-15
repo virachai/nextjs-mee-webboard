@@ -18,8 +18,6 @@ export default function PostList() {
   // Using useSession hook to get the session
   const { data: session } = useSession();
 
-  console.log("session ", session);
-
   // Fetch the posts from the API
   useEffect(() => {
     const fetchPosts = async () => {
@@ -32,7 +30,12 @@ export default function PostList() {
           throw new Error("Failed to fetch posts");
         }
         const data = await response.json();
-        setPosts(data);
+        const sortedData = data.sort(
+          (a: PostType, b: PostType) =>
+            new Date(b.createdAt ?? 0).getTime() -
+            new Date(a.createdAt ?? 0).getTime()
+        );
+        setPosts(sortedData || data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
