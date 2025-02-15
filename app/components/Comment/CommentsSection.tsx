@@ -49,6 +49,8 @@ const CommentsSection = ({
 }: CommentsSectionProps) => {
   const [isFormVisible, setIsFormVisible] = useState(false);
 
+  console.log("CommentsSection", postId);
+
   const toggleForm = () => {
     setIsFormVisible((prev) => !prev);
   };
@@ -56,7 +58,7 @@ const CommentsSection = ({
   return (
     <div className="mt-8">
       <h2 className="mb-6 font-semibold text-xl">
-        {MOCK_COMMENTS.length} Comments {postId}
+        {MOCK_COMMENTS.length} Comments
       </h2>
 
       {/* Add Comment Button */}

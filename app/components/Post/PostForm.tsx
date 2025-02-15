@@ -5,7 +5,9 @@ import { X, ChevronDown, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { tagData } from "@/app/components/ui/community-dropdown";
 import { useSession } from "next-auth/react";
-import axios from "axios"; // Import axios
+import { toast } from "react-toastify"; // Import toast for notifications
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios"; // Import axios for HTTP requests
 
 interface PostFormProps {
   slug?: string;
@@ -31,20 +33,19 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (slug) {
       const fetchPostData = async () => {
         try {
-          const response = await axios.get(
-            `${baseApiUrl}/aboard/posts/${slug}`
-          );
-          setTitle(response.data.title);
-          setContent(response.data.content);
-          setTags(response.data.tags);
+          const response = await fetch(`${baseApiUrl}/aboard/posts/${slug}`);
+          if (!response.ok) throw new Error("Failed to fetch post data");
+          const data = await response.json();
+          setTitle(data.title);
+          setContent(data.content);
+          setTags(data.tags);
         } catch (error) {
-          setError("Error fetching post data. Please try again.");
+          toast.error("Error fetching post data. Please try again.");
           console.error(error);
         }
       };
@@ -55,23 +56,24 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Check if user is signed in
     if (!session?.user?.name) {
-      setError("Please sign in.");
+      toast.error("Please sign in.");
       return;
     }
 
+    // Check if tags are selected (community is chosen)
     if (tags.length === 0 && !slug) {
-      setError("Please select a community.");
+      toast.error("Please select a community.");
       return;
     }
 
     setIsLoading(true);
-    setError(null);
 
     const username = session?.user?.name as string;
 
     if (!username) {
-      setError("Please Sign-In.");
+      toast.error("Please Sign-In.");
       return;
     }
 
@@ -94,13 +96,22 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
         headers: { "Content-Type": "application/json" },
         data: postPayload,
       });
-      console.log(response.status);
-      // if (response.status !== 200) throw new Error("Failed to submit post");
 
-      onClose();
-      router.push(slug ? `/post/${slug}` : "/");
+      if (response.status !== 200 && response.status !== 201)
+        throw new Error("Failed to submit post");
+
+      // Show success toast
+      toast.success(
+        slug ? "Post updated successfully!" : "Post created successfully!"
+      );
+
+      // Delay the router.push by 3 seconds (3000ms)
+      setTimeout(() => {
+        onClose();
+        router.push(slug ? `/post/${slug}` : "/");
+      }, 2000); // 3 seconds delay
     } catch (error) {
-      setError("Error submitting post. Please try again.");
+      toast.error("Error submitting post. Please try again.");
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -195,9 +206,6 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
             required
             aria-label="Post Content"
           />
-
-          {/* Error Message */}
-          {error && <p className="text-red-500 text-sm">{error}</p>}
 
           {/* Action Buttons */}
           <div className="flex md:flex-row flex-col md:justify-end gap-3 pt-4">
