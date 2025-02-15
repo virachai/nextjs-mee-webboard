@@ -7,7 +7,7 @@ import { tagData } from "@/app/components/ui/community-dropdown";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify"; // Import toast for notifications
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios"; // Import axios for HTTP requests
+// import axios from "axios"; // Import axios for HTTP requests
 
 interface PostFormProps {
   slug?: string;
@@ -84,18 +84,41 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
       username: username,
     };
 
-    const method = slug ? "PUT" : "POST";
-    const url = slug
-      ? `${baseApiUrl}/aboard/posts/${slug}`
-      : `${baseApiUrl}/aboard/posts`;
-
     try {
-      const response = await axios({
+      // const response = await axios({
+      //   method,
+      //   url,
+      //   headers: { "Content-Type": "application/json" },
+      //   data: JSON.stringify(postPayload),
+      // });
+      // const response = await fetch(url, {
+      //   method: method,
+      //   mode: "cors", // Ensure CORS is enabled
+      //   credentials: "include", // Allow cookies, credentials, etc.
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(postPayload),
+      // });
+      const method = slug ? "PUT" : "POST";
+      const url = slug ? `${baseApiUrl}/aboard/posts/${slug}` : `/api/items`; // Updated API endpoint for creating a post
+
+      const response = await fetch(url, {
         method,
-        url,
-        headers: { "Content-Type": "application/json" },
-        data: postPayload,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postPayload),
       });
+
+      // const response = await fetch("/api/items", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+
+      console.log("fetch: ", response);
 
       if (response.status !== 200 && response.status !== 201)
         throw new Error("Failed to submit post");

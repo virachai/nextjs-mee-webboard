@@ -25,10 +25,12 @@ export default function Search({ placeholder }: { placeholder: string }) {
 
   return (
     <div className="relative flex flex-shrink-0 flex-1 search_post">
-      <label htmlFor="search" className="sr-only">
+      <label htmlFor="search-input" className="sr-only">
         Search
       </label>
       <input
+        id="search-input"
+        name="search-input"
         className="peer block bg-transparent focus:bg-white py-[9px] pl-10 border border-gray-200 rounded-md outline-2 w-full placeholder:text-gray-500 text-sm"
         placeholder={placeholder}
         onChange={(e) => {

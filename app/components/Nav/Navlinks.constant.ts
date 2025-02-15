@@ -11,5 +11,5 @@ type linkProps = {
 
 export const links: linkProps[] = [
   { id: uuid(), name: "Home", href: "/", icon: HomeIcon },
-  { id: uuid(), name: "Our Blog", href: "/blog", icon: PencilSquareIcon },
+  { id: uuid(), name: "Our Blog", href: "/post", icon: PencilSquareIcon },
 ];

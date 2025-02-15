@@ -65,7 +65,7 @@ export default async function UserButton() {
             <p className="font-medium text-sm leading-none">
               {user?.name || userShortName}
             </p>
-            <p className="text-muted-foreground text-xs leading-none">
+            <p className="text-muted-foreground text-sm leading-none">
               {user?.email || "mail@exam.com"}
             </p>
           </div>
