@@ -3,13 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-const MOCK_COMMUNITIES = [
-  { id: 1, name: "Technology" },
-  { id: 2, name: "Gaming" },
-  { id: 3, name: "Sports" },
-  { id: 4, name: "Art" },
-];
+import { tagData } from "@/app/components/ui/community-dropdown";
 
 interface PostFormProps {
   slug?: string;
@@ -111,19 +105,19 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
               />
             </button>
 
-            {showCommunities && (
+            {!slug && showCommunities && (
               <div className="z-10 absolute bg-white shadow-lg mt-1 border rounded-lg w-full sm:w-64">
-                {MOCK_COMMUNITIES.map((community) => (
+                {tagData.map((community) => (
                   <button
                     key={community.id}
                     type="button"
                     className="hover:bg-gray-50 p-3 first:rounded-t-lg last:rounded-b-lg w-full text-left transition-colors"
                     onClick={() => {
-                      setSelectedCommunity(community.name);
+                      setSelectedCommunity(community.label); // Use community.label instead of community.name
                       setShowCommunities(false);
                     }}
                   >
-                    {community.name}
+                    {community.label}
                   </button>
                 ))}
               </div>
@@ -165,7 +159,7 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
               } hover:bg-green-600 px-6 py-2 rounded-lg text-white transition-colors`}
               disabled={isLoading}
             >
-              {isLoading ? "Saving..." : slug ? "Save Changes" : "Post"}
+              {isLoading ? "Saving..." : slug ? "Confirm" : "Post"}
             </button>
           </div>
         </form>

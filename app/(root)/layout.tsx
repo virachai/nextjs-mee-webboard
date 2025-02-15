@@ -2,11 +2,7 @@
 import Nav from "@/app/components/Nav/Nav";
 import SideNav from "@/app/components/ui/homepage/sidenav";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Nav />

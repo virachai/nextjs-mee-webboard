@@ -3,14 +3,14 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Check } from "lucide-react";
 import { useState } from "react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation"; // Import necessary hooks
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 interface MenuItem {
   id: string;
   label: string;
 }
 
-const menuItems: MenuItem[] = [
+export const tagData: MenuItem[] = [
   { id: "history", label: "History" },
   { id: "food", label: "Food" },
   { id: "pets", label: "Pets" },
@@ -64,7 +64,7 @@ const CommunityDropdown = () => {
           className="bg-white shadow-lg py-1 border border-gray-200 rounded-lg min-w-[220px]"
           sideOffset={5}
         >
-          {menuItems.map((item) => (
+          {tagData.map((item) => (
             <DropdownMenu.Item
               key={item.id}
               className={`flex items-center px-4 py-2 text-sm cursor-default select-none outline-none ${
