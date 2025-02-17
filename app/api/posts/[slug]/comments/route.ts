@@ -1,7 +1,8 @@
 // app/api/posts/[pid]/comments/route.ts
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
-import { NextResponse } from "next/server";
+// import { NextResponse } from "next/server";
+// import type { NextApiRequest, NextApiResponse } from "next";
 
 interface Comment {
   id: string;
@@ -10,21 +11,19 @@ interface Comment {
   createdAt: string;
 }
 
-interface Params {
-  pid: string;
-}
-
 const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API || "http://localhost:4000";
 
-// POST method
-export async function POST(request: Request, { params }: { params: Params }) {
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ pid: string }> }
+) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
     return new Response("Unauthorized: No session found", { status: 401 });
   }
 
-  const { pid } = params;
+  const pid = (await params).pid;
 
   if (!pid) {
     return new Response("Bad Request: Missing post ID", { status: 400 });
@@ -59,23 +58,23 @@ export async function POST(request: Request, { params }: { params: Params }) {
     }
 
     const comment: Comment = await res.json();
-    return NextResponse.json({ comment });
+    return Response.json({ comment });
   } catch (error) {
     console.error("Error creating comment:", error);
     return new Response("Internal Server Error", { status: 500 });
   }
 }
 
-// GET method to retrieve comments
-export async function GET(_: Request, { params }: { params: Params }) {
-  const { pid } = params;
-
-  if (!pid) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const slug = (await params).slug;
+  if (!slug) {
     return new Response("Bad Request: Missing post ID", { status: 400 });
   }
   try {
-    // Fetch comments for the post
-    const res = await fetch(`${baseApiUrl}/aboard/posts/${pid}/comments`);
+    const res = await fetch(`${baseApiUrl}/aboard/posts/${slug}/comments`);
 
     if (!res.ok) {
       const errorData = await res.json();
@@ -87,7 +86,7 @@ export async function GET(_: Request, { params }: { params: Params }) {
 
     // Parse and return the comments
     const comments: Comment[] = await res.json();
-    return NextResponse.json({ comments });
+    return Response.json({ comments });
   } catch (error) {
     console.error("Error fetching comments:", error);
     return new Response("Internal Server Error", { status: 500 });

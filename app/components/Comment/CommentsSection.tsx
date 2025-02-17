@@ -30,6 +30,9 @@ const CommentsSection = ({ postId }: CommentsSectionProps) => {
 
       try {
         const response = await fetch(`/api/posts/${postId}/comments`);
+        // const response = await fetch(
+        //   `https://nestjs-movie-api-tmdb.vercel.app/aboard/posts/${postId}/comments`
+        // );
         if (!response.ok) {
           console.error("Failed to fetch comments");
           return;
