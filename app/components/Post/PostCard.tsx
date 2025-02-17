@@ -16,7 +16,7 @@ type PostProps = {
 };
 
 const PostCard = ({
-  post: { _id, title, username, content, tags },
+  post: { _id, title, username, content, tags, commentCount },
   image,
   local = false,
   priority = false,
@@ -84,7 +84,7 @@ const PostCard = ({
       {/* Comment section */}
       <div className="flex items-center gap-1 text-gray-500">
         <MessageCircle size={20} />
-        <span>99+ Comments</span>
+        <span>{commentCount} Comments</span>
       </div>
     </div>
   </div>

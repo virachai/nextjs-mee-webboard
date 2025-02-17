@@ -6,6 +6,7 @@ export type Post = {
   createdAt?: string;
   content: string;
   tags?: string[];
+  commentCount?: number;
 };
 
 export const POSTS: Post[] = [

@@ -55,7 +55,6 @@ export default async function Page({
           <div className="flex sm:flex-row flex-col sm:items-center gap-1 sm:gap-2">
             <span className="font-medium text-lg">{post.username}</span>
             <time className="text-gray-500 text-sm">
-              {/* {new Date(post.updatedAt).toLocaleDateString()} */}
               {format(post.updatedAt)} {/* Display time ago */}
             </time>
           </div>

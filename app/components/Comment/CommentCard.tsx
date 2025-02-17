@@ -1,16 +1,16 @@
-// components/CommentCard.tsx
+// app/components/Comment/CommentCard.tsx
 import Image from "next/image";
-import React from "react";
+import { format } from "timeago.js";
 
 type CommentCardProps = {
-  author: string;
-  timeAgo: string;
+  username: string;
+  createdAt: string;
   content: string;
 };
 
 export default function CommentCard({
-  author,
-  timeAgo,
+  username,
+  createdAt,
   content,
 }: CommentCardProps) {
   return (
@@ -18,7 +18,7 @@ export default function CommentCard({
       <div className="bg-gray-200 rounded-full w-10 h-10 overflow-hidden">
         <Image
           src="https://via.assets.so/img.jpg?w=40&h=40"
-          alt={`${author}'s avatar`}
+          alt={`${username}'s avatar`}
           className="w-full h-full object-cover"
           width={40}
           height={40}
@@ -26,8 +26,8 @@ export default function CommentCard({
       </div>
       <div>
         <div className="flex items-center gap-2">
-          <span className="font-medium">{author}</span>
-          <span className="text-gray-500 text-sm">{timeAgo}</span>
+          <span className="font-medium">{username}</span>
+          <span className="text-gray-500 text-sm">{format(createdAt)}</span>
         </div>
         <p className="mt-1 text-gray-700">{content}</p>
       </div>

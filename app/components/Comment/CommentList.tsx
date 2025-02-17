@@ -2,11 +2,11 @@
 import React from "react";
 import CommentCard from "./CommentCard";
 
-type Comment = {
-  author: string;
-  timeAgo: string;
+interface Comment {
+  username: string;
+  createdAt: string;
   content: string;
-};
+}
 
 type CommentListProps = {
   comments: Comment[];
@@ -18,8 +18,8 @@ export default function CommentList({ comments }: CommentListProps) {
       {comments.map((comment, index) => (
         <CommentCard
           key={index}
-          author={comment.author}
-          timeAgo={comment.timeAgo}
+          username={comment.username}
+          createdAt={comment.createdAt}
           content={comment.content}
         />
       ))}

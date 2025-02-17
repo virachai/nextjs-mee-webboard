@@ -1,17 +1,13 @@
-// app/components/Comment/CommentsSection.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CommentList from "./CommentList";
 import CommentAction from "./CommentAction";
 
 interface Comment {
-  id: string;
-  author: string;
-  timeAgo: string;
+  username: string;
+  createdAt: string;
   content: string;
-  likes?: number;
-  replies?: Comment[];
 }
 
 interface CommentsSectionProps {
@@ -19,47 +15,40 @@ interface CommentsSectionProps {
   initialComments?: Comment[];
 }
 
-const MOCK_COMMENTS = [
-  {
-    id: "1",
-    author: "Wittawat98",
-    timeAgo: "12h ago",
-    content:
-      "Lorem ipsum dolor sit amet consectetur. Purus cursus vel est a pretium quam imperdiet.",
-  },
-  {
-    id: "2",
-    author: "Hawaii51",
-    timeAgo: "1mo. ago",
-    content:
-      "Lorem ipsum dolor sit amet consectetur. Purus cursus vel est a pretium quam imperdiet.",
-  },
-  {
-    id: "3",
-    author: "Helo_re",
-    timeAgo: "3mo. ago",
-    content:
-      "Lorem ipsum dolor sit amet consectetur. Purus cursus vel est a pretium quam imperdiet.",
-  },
-];
-
-const CommentsSection = ({
-  postId,
-  initialComments = MOCK_COMMENTS,
-}: CommentsSectionProps) => {
+const CommentsSection = ({ postId }: CommentsSectionProps) => {
+  const [comments, setComments] = useState<Comment[]>([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
-
-  console.log("CommentsSection", postId);
 
   const toggleForm = () => {
     setIsFormVisible((prev) => !prev);
   };
 
+  // Fetch comments when the component mounts or postId changes
+  useEffect(() => {
+    const fetchComments = async () => {
+      if (!postId) return;
+
+      try {
+        const response = await fetch(`/api/posts/${postId}/comments`);
+        if (!response.ok) {
+          console.error("Failed to fetch comments");
+          return;
+        }
+
+        const data = await response.json();
+        console.log(data);
+        setComments(data.comments || []); // Set the fetched comments
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, [postId]); // Only fetch comments if postId changes
+
   return (
     <div className="mt-8">
-      <h2 className="mb-6 font-semibold text-xl">
-        {MOCK_COMMENTS.length} Comments
-      </h2>
+      <h2 className="mb-6 font-semibold text-xl">{comments.length} Comments</h2>
 
       {/* Add Comment Button */}
       {!isFormVisible && (
@@ -76,8 +65,8 @@ const CommentsSection = ({
         <CommentAction isFormVisible={isFormVisible} toggleForm={toggleForm} />
       )}
 
-      {/* Pass MOCK_COMMENTS to CommentList as a prop */}
-      <CommentList comments={initialComments} />
+      {/* Pass the fetched comments to CommentList */}
+      <CommentList comments={comments} />
     </div>
   );
 };
