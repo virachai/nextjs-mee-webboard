@@ -1,14 +1,10 @@
-import { Metadata } from "next";
+// app/(root)/(homepage)/post/page.tsx
 import PostSection from "@/app/components/Post/PostSection";
-
-export const metadata: Metadata = {
-  title: "Our Blog",
-};
 
 export default async function Page() {
   return (
     <div>
-      <PostSection />
+      <PostSection endpoint={"/api/our-blog"} />
     </div>
   );
 }

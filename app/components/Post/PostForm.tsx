@@ -5,9 +5,7 @@ import { X, ChevronDown, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { tagData } from "@/app/components/ui/community-dropdown";
 import { useSession } from "next-auth/react";
-import { toast } from "react-toastify"; // Import toast for notifications
-import "react-toastify/dist/ReactToastify.css";
-// import axios from "axios"; // Import axios for HTTP requests
+import { toast } from "react-toastify";
 
 interface PostFormProps {
   slug?: string;
@@ -56,13 +54,11 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Check if user is signed in
     if (!session?.user?.name) {
       toast.error("Please sign in.");
       return;
     }
 
-    // Check if tags are selected (community is chosen)
     if (tags.length === 0 && !slug) {
       toast.error("Please select a community.");
       return;
@@ -85,23 +81,8 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
     };
 
     try {
-      // const response = await axios({
-      //   method,
-      //   url,
-      //   headers: { "Content-Type": "application/json" },
-      //   data: JSON.stringify(postPayload),
-      // });
-      // const response = await fetch(url, {
-      //   method: method,
-      //   mode: "cors", // Ensure CORS is enabled
-      //   credentials: "include", // Allow cookies, credentials, etc.
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(postPayload),
-      // });
       const method = slug ? "PUT" : "POST";
-      const url = slug ? `${baseApiUrl}/aboard/posts/${slug}` : `/api/items`; // Updated API endpoint for creating a post
+      const url = slug ? `/api/posts/${slug}` : `/api/posts`; // Updated API endpoint for creating a post
 
       const response = await fetch(url, {
         method,
@@ -111,28 +92,17 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
         body: JSON.stringify(postPayload),
       });
 
-      // const response = await fetch("/api/items", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
-
-      console.log("fetch: ", response);
-
       if (response.status !== 200 && response.status !== 201)
         throw new Error("Failed to submit post");
 
-      // Show success toast
       toast.success(
         slug ? "Post updated successfully!" : "Post created successfully!"
       );
 
-      // Delay the router.push by 3 seconds (3000ms)
       setTimeout(() => {
         onClose();
         router.push(slug ? `/post/${slug}` : "/");
-      }, 2000); // 3 seconds delay
+      }, 2000);
     } catch (error) {
       toast.error("Error submitting post. Please try again.");
       console.error(error);

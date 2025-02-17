@@ -14,13 +14,15 @@ export default function SideNav() {
       <div className="flex flex-row md:flex-col justify-between space-x-2 md:space-x-0 md:space-y-2 grow">
         <NavLinks />
         <div className="hidden md:block rounded-md w-full h-auto grow"></div>
-        <Button
-          onClick={() => session && signOut()}
-          className="flex md:flex-none justify-center md:justify-start items-center gap-2 bg-gray-50 hover:bg-sky-100 p-3 md:p-2 md:px-3 rounded-md w-full h-[48px] font-medium hover:text-blue-600 text-sm grow"
-        >
-          <PowerIcon className="w-6" />
-          <div className="hidden md:block">Sign Out</div>
-        </Button>
+        {session && (
+          <Button
+            onClick={() => signOut()}
+            className="flex md:flex-none justify-center md:justify-start items-center gap-2 bg-gray-50 hover:bg-sky-100 p-3 md:p-2 md:px-3 rounded-md w-full h-[48px] font-medium hover:text-blue-600 text-sm grow"
+          >
+            <PowerIcon className="w-6" />
+            <div className="hidden md:block">Sign Out</div>
+          </Button>
+        )}
       </div>
     </div>
   );

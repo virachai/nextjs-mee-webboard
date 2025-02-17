@@ -1,24 +1,3 @@
-// import React from "react";
-// import clsx from "clsx";
-
-// interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-//   children: React.ReactNode;
-// }
-
-// export function Button({ children, className, ...rest }: ButtonProps) {
-//   return (
-//     <button
-//       {...rest}
-//       className={clsx(
-//         "flex items-center bg-blue-500 hover:bg-blue-400 active:bg-blue-600 aria-disabled:opacity-50 px-4 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 focus-visible:outline-offset-2 h-10 font-medium text-white text-sm transition-colors aria-disabled:cursor-not-allowed",
-//         className
-//       )}
-//     >
-//       {children}
-//     </button>
-//   );
-// }
-
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";

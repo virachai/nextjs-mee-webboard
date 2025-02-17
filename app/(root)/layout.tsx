@@ -1,6 +1,10 @@
-// import Footer from "@/app/components/Footer/Footer";
 import Nav from "@/app/components/Nav/Nav";
 import SideNav from "@/app/components/ui/homepage/sidenav";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "a Board",
+};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,7 +16,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
         <div className="flex-grow bg-white md:overflow-y-auto">{children}</div>
       </div>
-      {/* <Footer /> */}
     </>
   );
 }

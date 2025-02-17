@@ -12,12 +12,11 @@ interface Errors {
 }
 
 export default function SignInPage() {
-  const { data: session } = useSession(); // Get session data
+  const { data: session } = useSession();
 
   const [username, setUsername] = useState<string>("emilys");
   const [errors, setErrors] = useState<Errors>({});
 
-  // Redirect if user is already logged in
   useEffect(() => {
     if (session) {
       window.location.href = "/post";
@@ -28,7 +27,6 @@ export default function SignInPage() {
     e.preventDefault();
     const validationErrors: Errors = {};
 
-    // Validate username input
     if (!username) {
       validationErrors.username = "Username is required";
     }
@@ -38,7 +36,6 @@ export default function SignInPage() {
       return;
     }
 
-    // Call signIn from next-auth
     const result = await signIn("credentials", {
       redirect: false,
       username,
@@ -49,8 +46,6 @@ export default function SignInPage() {
       console.error("Login failed", result.error);
       setErrors({ username: "Invalid username or password" });
     } else {
-      // Handle success (you can redirect or show a success message)
-      // console.log("Logged in successfully", result);
       window.location.href = "/post";
     }
   };
