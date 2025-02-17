@@ -103,10 +103,7 @@ export async function DELETE(
   }
 }
 
-export async function GET(
-  request: Request,
-  { params }: { params: { pid: string } }
-) {
+export async function GET(_: Request, { params }: { params: { pid: string } }) {
   const session = await getServerSession(authOptions);
 
   // Check if the user is authenticated

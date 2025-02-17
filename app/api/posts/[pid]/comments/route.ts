@@ -1,5 +1,7 @@
+// app/api/posts/[pid]/comments/route.ts
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
+import { NextResponse } from "next/server";
 
 interface Comment {
   id: string;
@@ -8,14 +10,14 @@ interface Comment {
   createdAt: string;
 }
 
-const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API || "http://localhost:4000";
-// const baseApiUrl = "http://localhost:4000";
+interface Params {
+  pid: string;
+}
 
-// POST method (unchanged)
-export async function POST(
-  request: Request,
-  { params }: { params: { pid: string } }
-) {
+const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API || "http://localhost:4000";
+
+// POST method
+export async function POST(request: Request, { params }: { params: Params }) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -57,7 +59,7 @@ export async function POST(
     }
 
     const comment: Comment = await res.json();
-    return Response.json({ comment });
+    return NextResponse.json({ comment });
   } catch (error) {
     console.error("Error creating comment:", error);
     return new Response("Internal Server Error", { status: 500 });
@@ -65,13 +67,12 @@ export async function POST(
 }
 
 // GET method to retrieve comments
-export async function GET(_: Request, { params }: { params: { pid: string } }) {
+export async function GET(_: Request, { params }: { params: Params }) {
   const { pid } = params;
 
   if (!pid) {
     return new Response("Bad Request: Missing post ID", { status: 400 });
   }
-  console.log("pid", pid);
   try {
     // Fetch comments for the post
     const res = await fetch(`${baseApiUrl}/aboard/posts/${pid}/comments`);
@@ -86,7 +87,7 @@ export async function GET(_: Request, { params }: { params: { pid: string } }) {
 
     // Parse and return the comments
     const comments: Comment[] = await res.json();
-    return Response.json({ comments });
+    return NextResponse.json({ comments });
   } catch (error) {
     console.error("Error fetching comments:", error);
     return new Response("Internal Server Error", { status: 500 });
