@@ -15,7 +15,7 @@ const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API || "http://localhost:4000";
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ pid: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -23,9 +23,9 @@ export async function POST(
     return new Response("Unauthorized: No session found", { status: 401 });
   }
 
-  const pid = (await params).pid;
+  const slug = (await params).slug;
 
-  if (!pid) {
+  if (!slug) {
     return new Response("Bad Request: Missing post ID", { status: 400 });
   }
 
@@ -38,7 +38,7 @@ export async function POST(
       });
     }
 
-    const res = await fetch(`${baseApiUrl}/aboard/posts/${pid}/comments`, {
+    const res = await fetch(`${baseApiUrl}/aboard/posts/${slug}/comments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
