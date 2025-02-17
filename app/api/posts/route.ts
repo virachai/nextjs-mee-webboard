@@ -1,3 +1,4 @@
+// app/api/posts/[pid]/route.ts
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import { revalidateTag } from "next/cache";

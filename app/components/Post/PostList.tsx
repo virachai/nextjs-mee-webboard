@@ -31,8 +31,26 @@ export default function PostList({ endpoint }: { endpoint?: string }) {
     fetchPosts();
   }, [endpoint]);
 
-  const handleDelete = (postId: string) => {
-    console.log(`Delete post with ID: ${postId}`);
+  const handleDelete = async (postId: string) => {
+    try {
+      // Assuming your API endpoint for deleting posts is something like `/api/posts/{id}`
+      const response = await fetch(`/api/posts/${postId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the post");
+      }
+
+      // If delete is successful, update the posts state
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An error occurred while deleting the post"
+      );
+    }
   };
 
   if (loading) {

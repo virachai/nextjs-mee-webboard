@@ -60,3 +60,45 @@ export async function PUT(
     return new Response("Internal Server Error", { status: 500 });
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { pid: string } }
+) {
+  const session = await getServerSession(authOptions);
+
+  // Check if the user is authenticated
+  if (!session) {
+    return new Response("Unauthorized: No session found", { status: 401 });
+  }
+
+  const { pid } = params;
+
+  if (!pid) {
+    return new Response("Bad Request: Missing post ID", { status: 400 });
+  }
+
+  try {
+    const res = await fetch(`${baseApiUrl}/aboard/posts/${pid}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      return new Response(
+        `Failed to delete post: ${errorData.message || "Unknown error"}`,
+        { status: res.status }
+      );
+    }
+
+    revalidateTag("api-posts");
+    revalidateTag("api-user-posts");
+    return new Response("Post deleted successfully", { status: 200 });
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    return new Response("Internal Server Error", { status: 500 });
+  }
+}
