@@ -11,13 +11,13 @@ interface Comment {
 }
 
 interface CommentsSectionProps {
-  postId?: string;
-  initialComments?: Comment[];
+  postId: string;
 }
 
 const CommentsSection = ({ postId }: CommentsSectionProps) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [loading, setLoading] = useState(true); // Loading state
 
   const toggleForm = () => {
     setIsFormVisible((prev) => !prev);
@@ -29,12 +29,12 @@ const CommentsSection = ({ postId }: CommentsSectionProps) => {
       if (!postId) return;
 
       try {
+        setLoading(true); // Start loading
+
         const response = await fetch(`/api/posts/${postId}/comments`);
-        // const response = await fetch(
-        //   `https://nestjs-movie-api-tmdb.vercel.app/aboard/posts/${postId}/comments`
-        // );
         if (!response.ok) {
           console.error("Failed to fetch comments");
+          setLoading(false); // Stop loading in case of failure
           return;
         }
 
@@ -43,11 +43,22 @@ const CommentsSection = ({ postId }: CommentsSectionProps) => {
         setComments(data.comments || []); // Set the fetched comments
       } catch (error) {
         console.error("Error fetching comments:", error);
+        setLoading(false); // Stop loading in case of an error
+      } finally {
+        setLoading(false); // Stop loading after the fetch completes
       }
     };
 
     fetchComments();
   }, [postId]); // Only fetch comments if postId changes
+
+  if (loading) {
+    return (
+      <div className="flex justify-center bg-white mt-8 rounded-xl min-h-screen">
+        <h2 className="py-8">Loading...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-8">
