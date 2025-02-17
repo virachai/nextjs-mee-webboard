@@ -1,16 +1,16 @@
 import PostSection from "@/app/components/Post/PostSection";
 import PostAction from "@/app/components/Post/PostAction";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Edit Post",
-};
+import { Suspense } from "react";
 
 export default function Page() {
   return (
     <div>
-      <PostSection />
-      <PostAction />
+      <Suspense>
+        <PostSection endpoint={"/api/our-blog"} />
+      </Suspense>
+      <Suspense>
+        <PostAction />
+      </Suspense>
     </div>
   );
 }

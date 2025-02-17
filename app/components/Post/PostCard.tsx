@@ -4,7 +4,7 @@ import Image, { StaticImageData } from "next/image";
 import styles from "./Post.module.css";
 import { MessageCircle, Edit, Trash } from "lucide-react"; // Import Edit and Trash icons
 import { Post as PostType } from "@/app/data/postData";
-import { Session } from "next-auth"; // Import Session type if needed
+import { Session } from "next-auth";
 
 type PostProps = {
   post: PostType;

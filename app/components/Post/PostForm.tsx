@@ -15,7 +15,7 @@ interface PostFormProps {
 interface PostPayload {
   title: string;
   content: string;
-  tags: string[];
+  tags?: string[];
   username?: string;
 }
 
@@ -51,16 +51,71 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
     }
   }, [slug, baseApiUrl]);
 
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   if (!session?.user?.name) {
+  //     toast.error("Please sign in.");
+  //     return;
+  //   }
+
+  //   if (tags.length === 0 && !slug) {
+  //     toast.error("Please select a community.");
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+
+  //   const username = session?.user?.name as string;
+
+  //   if (!username) {
+  //     toast.error("Please Sign-In.");
+  //     return;
+  //   }
+
+  //   const postPayload: PostPayload = {
+  //     title,
+  //     content,
+  //     tags,
+  //     username: username,
+  //   };
+
+  //   try {
+  //     const method = slug ? "PUT" : "POST";
+  //     const url = slug ? `/api/posts/${slug}` : `/api/posts`; // Updated API endpoint for creating a post
+
+  //     const response = await fetch(url, {
+  //       method,
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(postPayload),
+  //     });
+
+  //     if (response.status !== 200 && response.status !== 201)
+  //       throw new Error("Failed to submit post");
+
+  //     toast.success(
+  //       slug ? "Post updated successfully!" : "Post created successfully!"
+  //     );
+
+  //     setTimeout(() => {
+  //       onClose();
+  //       router.push(slug ? `/post/${slug}` : "/");
+  //     }, 2000);
+  //   } catch (error) {
+  //     toast.error("Error submitting post. Please try again.");
+  //     console.error(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!session?.user?.name) {
       toast.error("Please sign in.");
-      return;
-    }
-
-    if (tags.length === 0 && !slug) {
-      toast.error("Please select a community.");
       return;
     }
 
@@ -76,13 +131,13 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
     const postPayload: PostPayload = {
       title,
       content,
-      tags,
-      username: username,
+      tags: slug ? tags : [],
+      username: slug ? undefined : username,
     };
 
     try {
       const method = slug ? "PUT" : "POST";
-      const url = slug ? `/api/posts/${slug}` : `/api/posts`; // Updated API endpoint for creating a post
+      const url = slug ? `/api/posts/${slug}` : `/api/posts`;
 
       const response = await fetch(url, {
         method,

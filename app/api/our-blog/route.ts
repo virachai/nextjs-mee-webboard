@@ -6,13 +6,11 @@ const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API || "http://localhost:4000";
 export async function GET() {
   const session = await getServerSession(authOptions);
 
-  // Check if the user is authenticated
   if (!session) {
     return new Response("Unauthorized: No session found", { status: 401 });
   }
 
   const username = session?.user?.name as string;
-  console.log("User ", username);
   try {
     const res = await fetch(`${baseApiUrl}/aboard/user/${username}/posts/`, {
       method: "GET",
