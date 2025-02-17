@@ -22,8 +22,6 @@ interface PostPayload {
 const PostForm = ({ slug, onClose }: PostFormProps) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const baseApiUrl =
-    process.env.NEXT_PUBLIC_BASE_API || "http://localhost:4000";
 
   const [selectedCommunity, setSelectedCommunity] = useState("");
   const [showCommunities, setShowCommunities] = useState(false);
@@ -36,7 +34,7 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
     if (slug) {
       const fetchPostData = async () => {
         try {
-          const response = await fetch(`${baseApiUrl}/aboard/posts/${slug}`);
+          const response = await fetch(`/api/posts/${slug}`);
           if (!response.ok) throw new Error("Failed to fetch post data");
           const data = await response.json();
           setTitle(data.title);
@@ -49,7 +47,7 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
       };
       fetchPostData();
     }
-  }, [slug, baseApiUrl]);
+  }, [slug]);
 
   // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   //   e.preventDefault();

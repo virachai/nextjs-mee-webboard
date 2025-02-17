@@ -102,3 +102,46 @@ export async function DELETE(
     return new Response("Internal Server Error", { status: 500 });
   }
 }
+
+export async function GET(
+  request: Request,
+  { params }: { params: { pid: string } }
+) {
+  const session = await getServerSession(authOptions);
+
+  // Check if the user is authenticated
+  if (!session) {
+    return new Response("Unauthorized: No session found", { status: 401 });
+  }
+
+  const { pid } = params;
+
+  // Ensure that the pid is provided
+  if (!pid) {
+    return new Response("Bad Request: Missing post ID", { status: 400 });
+  }
+
+  try {
+    const res = await fetch(`${baseApiUrl}/aboard/posts/${pid}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      return new Response(
+        `Failed to fetch post: ${errorData.message || "Unknown error"}`,
+        { status: res.status }
+      );
+    }
+
+    const data = await res.json();
+
+    return Response.json({ ...data });
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return new Response("Internal Server Error", { status: 500 });
+  }
+}
