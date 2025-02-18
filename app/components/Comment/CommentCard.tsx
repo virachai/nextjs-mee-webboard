@@ -15,7 +15,7 @@ export default function CommentCard({
 }: CommentCardProps) {
   return (
     <div className="flex gap-3">
-      <div className="bg-gray-200 rounded-full w-10 h-10 overflow-hidden">
+      <div className="bg-gray-200 rounded-full w-10 min-w-[40px] h-10 overflow-hidden">
         <Image
           src="https://via.assets.so/img.jpg?w=40&h=40"
           alt={`${username}'s avatar`}
