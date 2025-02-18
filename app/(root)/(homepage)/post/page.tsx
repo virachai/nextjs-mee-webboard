@@ -10,7 +10,7 @@ export default async function Page() {
     <div>
       {!session && (
         <div className="bg-[#BBC2C0] px-4 md:px-6 pt-4 md:pt-6">
-          <div className="flex justify-center bg-white p-4 rounded-xl w-full">
+          <div className="flex justify-center bg-slate-50 p-4 rounded-xl w-full">
             <h2>Sign in to interact with our blog posts!</h2>
           </div>
         </div>

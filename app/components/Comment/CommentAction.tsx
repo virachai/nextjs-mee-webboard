@@ -67,6 +67,7 @@ const CommentAction = ({
         <h2>Sign in to add a comment!</h2>
       </div>
     );
+
   return (
     <>
       {/* Desktop Form */}

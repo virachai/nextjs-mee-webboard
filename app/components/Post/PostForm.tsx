@@ -226,7 +226,11 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
             <X size={24} />
           </button>
         </div>
-
+        {!session && (
+          <div className="flex justify-center bg-slate-50 p-4 w-full">
+            <h2>Sign in to ceate a post!</h2>
+          </div>
+        )}
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4 p-4">
           {/* Community Dropdown */}
