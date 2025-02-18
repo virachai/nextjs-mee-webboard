@@ -30,19 +30,15 @@ export default async function Nav() {
       </Link>
 
       <div className="flex justify-end items-center gap-x-8 min-w-[250px]">
-        <MobileNavbar />
-
-        {session?.user?.name ? (
-          <div className="-mr-4">
+        <div className="-mr-5">
+          {session?.user?.name ? (
             <span className="text-white">{session?.user?.name}</span>
-          </div> // Display user name from session
-        ) : (
-          <div>
-            <span className="text-white">Guest</span>{" "}
-          </div> // Fallback when no session is available
-        )}
-
+          ) : (
+            <span className="text-white">Guest</span>
+          )}
+        </div>
         <UserButton />
+        <MobileNavbar />
       </div>
     </nav>
   );
