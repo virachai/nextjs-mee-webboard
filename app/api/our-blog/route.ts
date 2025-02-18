@@ -18,7 +18,7 @@ export async function GET() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${customSession.accessToken}`,
+        Authorization: `Bearer ${customSession?.accessToken}`,
       },
       next: { tags: ["api-user-posts"] },
     });
