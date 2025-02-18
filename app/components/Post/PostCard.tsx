@@ -106,7 +106,7 @@ const PostCard = ({
               alt={`${username}'s avatar`}
               width={40}
               height={40}
-              className="w-full h-full object-cover"
+              className="w-full min-w-[40px] h-full object-cover"
               priority={priority}
             />
           </div>
@@ -116,12 +116,13 @@ const PostCard = ({
         {/* Tags */}
         <div className="inline-flex flex-wrap gap-2">
           {tags?.map((tag: string, index: number) => (
-            <span
+            <Link
+              href={`/?tag=${tag}`}
               key={index}
               className="bg-gray-100 mx-1 px-3 py-1 rounded-full text-gray-600 text-sm capitalize"
             >
               {tag}
-            </span>
+            </Link>
           ))}
         </div>
 

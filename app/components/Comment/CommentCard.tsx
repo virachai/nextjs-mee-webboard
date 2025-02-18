@@ -19,7 +19,7 @@ export default function CommentCard({
         <Image
           src="https://via.assets.so/img.jpg?w=40&h=40"
           alt={`${username}'s avatar`}
-          className="w-full h-full object-cover"
+          className="w-full min-w-[40px] h-full object-cover"
           width={40}
           height={40}
         />

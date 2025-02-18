@@ -88,12 +88,13 @@ export default async function Page({
         {post?.tags?.length ? (
           <div className="inline-flex flex-wrap gap-2">
             {post?.tags.map((tag: string, index: number) => (
-              <span
+              <Link
+                href={`/?tag=${tag}`}
                 key={index}
-                className="inline-block bg-gray-100 px-4 py-1 rounded-full text-gray-600 text-sm"
+                className="inline-block bg-gray-100 px-4 py-1 rounded-full text-gray-600 text-sm capitalize"
               >
                 {tag}
-              </span>
+              </Link>
             ))}
           </div>
         ) : (

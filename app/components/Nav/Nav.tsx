@@ -29,15 +29,19 @@ export default async function Nav() {
         a Board
       </Link>
 
-      <div className="flex items-center gap-x-8">
+      <div className="flex justify-end items-center gap-x-8 min-w-[250px]">
         <MobileNavbar />
-        <div className="-mr-4">
-          {session?.user?.name ? (
-            <span className="text-white">{session?.user?.name}</span> // Display user name from session
-          ) : (
-            <span className="text-white">Guest</span> // Fallback when no session is available
-          )}
-        </div>
+
+        {session?.user?.name ? (
+          <div className="-mr-4">
+            <span className="text-white">{session?.user?.name}</span>
+          </div> // Display user name from session
+        ) : (
+          <div>
+            <span className="text-white">Guest</span>{" "}
+          </div> // Fallback when no session is available
+        )}
+
         <UserButton />
       </div>
     </nav>
