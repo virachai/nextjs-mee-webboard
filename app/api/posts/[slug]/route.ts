@@ -25,7 +25,6 @@ export async function PUT(
   const slug = (await params).slug;
   const { title, content }: PostPayload = await request.json();
 
-  // Validate the required fields
   if (!title || !content) {
     return new Response("Bad Request: Missing required fields", {
       status: 400,
@@ -67,7 +66,6 @@ export async function DELETE(
 ) {
   const session = await getServerSession(authOptions);
 
-  // Check if the user is authenticated
   if (!session) {
     return new Response("Unauthorized: No session found", { status: 401 });
   }
@@ -145,21 +143,3 @@ export async function GET(
     return new Response("Internal Server Error", { status: 500 });
   }
 }
-
-// export async function GET(
-//   request: Request,
-//   { params }: { params: Promise<{ slug: string }> }
-// ) {
-//   const slug = (await params).slug;
-//   console.log(slug);
-// }
-
-// export async function POST(request: Request) {
-//   console.log(request);
-// }
-// export async function PUT(request: Request) {
-//   console.log(request);
-// }
-// export async function DELETE(request: Request) {
-//   console.log(request);
-// }

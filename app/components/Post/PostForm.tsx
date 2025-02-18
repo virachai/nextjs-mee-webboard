@@ -40,6 +40,13 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
           setTitle(data.title);
           setContent(data.content);
           setTags(data.tags);
+          const selectedTag = tagData.find(
+            (community) => community.id === data.tags[0]
+          );
+          if (selectedTag) {
+            setSelectedCommunity(selectedTag.label); // Set the selected community's label
+          }
+          setShowCommunities(false);
         } catch (error) {
           toast.error("Error fetching post data. Please try again.");
           console.error(error);
@@ -48,66 +55,6 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
       fetchPostData();
     }
   }, [slug]);
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   if (!session?.user?.name) {
-  //     toast.error("Please sign in.");
-  //     return;
-  //   }
-
-  //   if (tags.length === 0 && !slug) {
-  //     toast.error("Please select a community.");
-  //     return;
-  //   }
-
-  //   setIsLoading(true);
-
-  //   const username = session?.user?.name as string;
-
-  //   if (!username) {
-  //     toast.error("Please Sign-In.");
-  //     return;
-  //   }
-
-  //   const postPayload: PostPayload = {
-  //     title,
-  //     content,
-  //     tags,
-  //     username: username,
-  //   };
-
-  //   try {
-  //     const method = slug ? "PUT" : "POST";
-  //     const url = slug ? `/api/posts/${slug}` : `/api/posts`; // Updated API endpoint for creating a post
-
-  //     const response = await fetch(url, {
-  //       method,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(postPayload),
-  //     });
-
-  //     if (response.status !== 200 && response.status !== 201)
-  //       throw new Error("Failed to submit post");
-
-  //     toast.success(
-  //       slug ? "Post updated successfully!" : "Post created successfully!"
-  //     );
-
-  //     setTimeout(() => {
-  //       onClose();
-  //       router.push(slug ? `/post/${slug}` : "/");
-  //     }, 2000);
-  //   } catch (error) {
-  //     toast.error("Error submitting post. Please try again.");
-  //     console.error(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -129,7 +76,7 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
     const postPayload: PostPayload = {
       title,
       content,
-      tags: slug ? tags : [],
+      tags: tags,
       username: slug ? undefined : username,
     };
 
@@ -164,51 +111,53 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
     }
   };
 
-  const CommunityDropdown = () => (
-    <div className="relative">
-      <button
-        type="button"
-        onClick={() => setShowCommunities(!showCommunities)}
-        className="flex justify-between items-center p-3 border hover:border-green-500 rounded-lg w-full md:w-64 text-gray-600 md:text-left transition-colors"
-        aria-expanded={showCommunities}
-        aria-haspopup="listbox"
-      >
-        <p className="md:text-left grow">
-          {selectedCommunity || "Choose a community"}
-        </p>
-        <ChevronDown
-          size={20}
-          className={`transition-transform ${
-            showCommunities ? "rotate-180" : ""
-          }`}
-        />
-      </button>
-
-      {showCommunities && (
-        <div
-          className="z-10 absolute bg-white shadow-lg mt-1 border rounded-lg w-full md:w-64"
-          role="listbox"
+  const CommunityDropdown = () => {
+    return (
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setShowCommunities(!showCommunities)}
+          className="flex justify-between items-center p-3 border hover:border-green-500 rounded-lg w-full md:w-64 text-gray-600 md:text-left transition-colors"
+          aria-expanded={showCommunities}
+          aria-haspopup="listbox"
         >
-          {tagData.map((community) => (
-            <button
-              key={community.id}
-              type="button"
-              className="hover:bg-gray-50 p-3 first:rounded-t-lg last:rounded-b-lg w-full text-left transition-colors"
-              onClick={() => {
-                setSelectedCommunity(community.label);
-                setTags([community.id]);
-                setShowCommunities(false);
-              }}
-              role="option"
-              aria-selected={selectedCommunity === community.label}
-            >
-              {community.label}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+          <p className="md:text-left grow">
+            {selectedCommunity || "Choose a community"}
+          </p>
+          <ChevronDown
+            size={20}
+            className={`transition-transform ${
+              showCommunities ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+
+        {showCommunities && (
+          <div
+            className="z-10 absolute bg-white shadow-lg mt-1 border rounded-lg w-full md:w-64"
+            role="listbox"
+          >
+            {tagData.map((community) => (
+              <button
+                key={community.id}
+                type="button"
+                className="hover:bg-gray-50 p-3 first:rounded-t-lg last:rounded-b-lg w-full text-left transition-colors"
+                onClick={() => {
+                  setSelectedCommunity(community.label);
+                  setTags([community.id]);
+                  setShowCommunities(false);
+                }}
+                role="option"
+                aria-selected={selectedCommunity === community.label}
+              >
+                {community.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="z-50 fixed inset-0 flex justify-center items-start bg-black bg-opacity-50 p-4 sm:p-6">
@@ -234,7 +183,7 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4 p-4">
           {/* Community Dropdown */}
-          {!slug && <CommunityDropdown />}
+          <CommunityDropdown />
 
           {/* Title Input */}
           <input

@@ -39,7 +39,6 @@ const CommentsSection = ({ postId }: CommentsSectionProps) => {
         }
 
         const data = await response.json();
-        console.log(data);
         setComments(data.comments || []); // Set the fetched comments
       } catch (error) {
         console.error("Error fetching comments:", error);

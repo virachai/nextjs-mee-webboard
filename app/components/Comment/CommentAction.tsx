@@ -29,10 +29,9 @@ const CommentAction = ({
     if (!username) return;
 
     setIsSubmitting(true);
-    setError(null); // Reset any previous error
+    setError(null);
 
     try {
-      // Call the API to create a comment
       const response = await fetch(`/api/posts/${slug}/comments`, {
         method: "POST",
         headers: {
