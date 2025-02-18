@@ -2,8 +2,18 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import PostSection from "@/app/components/Post/PostSection";
-
-export default async function Page() {
+export default async function Page(props: {
+  searchParams?: Promise<{
+    query?: string;
+    page?: string;
+    tag?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || "";
+  const page = searchParams?.page || "1";
+  const tag = searchParams?.tag || "";
+  const endpoint = `/api/posts?query=${query}&page=${page}&tag=${tag}`;
   const session = await getServerSession(authOptions);
 
   return (
@@ -15,7 +25,7 @@ export default async function Page() {
           </div>
         </div>
       )}
-      <PostSection endpoint={"/api/our-blog"} />
+      <PostSection endpoint={endpoint} />
     </div>
   );
 }

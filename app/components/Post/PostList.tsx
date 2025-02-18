@@ -7,7 +7,15 @@ import { Post as PostType } from "@/app/data/postData";
 import { useSession } from "next-auth/react"; // Use useSession
 import { Session } from "next-auth";
 
-export default function PostList({ endpoint }: { endpoint?: string }) {
+interface PostListProps {
+  endpoint?: string;
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}
+
+export default function PostList({ endpoint }: PostListProps) {
   const { data: session } = useSession(); // Use the hook here
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,11 +37,11 @@ export default function PostList({ endpoint }: { endpoint?: string }) {
       }
     };
     fetchPosts();
+    console.log("PostList endpoint ", endpoint);
   }, [endpoint]);
 
   const handleDelete = async (postId: string) => {
     try {
-      // Assuming your API endpoint for deleting posts is something like `/api/posts/{id}`
       const response = await fetch(`/api/posts/${postId}`, {
         method: "DELETE",
       });
