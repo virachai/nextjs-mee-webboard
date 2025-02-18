@@ -1,21 +1,17 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { Session } from "next-auth";
+import { DefaultUser } from "next-auth";
 
-// Extend the Session type to include accessToken and refreshToken
+export interface ExtendedUser extends DefaultUser {
+  username: string;
+  accessToken: string;
+}
+
 interface CustomSession extends Session {
   accessToken: string;
-  refreshToken: string;
-  user: {
-    id: number;
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    gender: string;
-    image: string;
-    name: string;
-  };
+  refreshToken?: string;
+  user: ExtendedUser;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -26,11 +22,10 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials): Promise<ExtendedUser> {
         try {
           const baseApiUrl =
             process.env.NEXT_PUBLIC_BASE_API || "http://localhost:4000";
-
           const res = await fetch(`${baseApiUrl}/aboard/auth`, {
             method: "POST",
             headers: {
@@ -43,17 +38,14 @@ export const authOptions: NextAuthOptions = {
           });
 
           const data = await res.json();
-          if (1) console.log("dummyjson", data, req);
+
           if (res.ok && data?.accessToken) {
+            // Return user data with accessToken
             return {
               id: data.id,
               accessToken: data.accessToken,
-              refreshToken: data.refreshToken,
               username: data.username,
               email: data.email,
-              firstName: data.firstName,
-              lastName: data.lastName,
-              gender: data.gender,
               image: data.image,
               name: data.username,
             };
@@ -72,22 +64,22 @@ export const authOptions: NextAuthOptions = {
     maxAge: 60 * 30,
   },
   callbacks: {
-    async jwt({ token, account }) {
-      if (0) {
-        console.log("jwt account: ", account);
+    async jwt({ token, user }) {
+      const userData = user as ExtendedUser;
+      if (user) {
+        token.accessToken = userData.accessToken;
+        token.username = userData.username;
       }
       return token;
     },
     async session({ session, token }) {
       const customSession = session as CustomSession;
       customSession.accessToken = token.accessToken as string;
-      customSession.refreshToken = token.refreshToken as string;
-
       return customSession;
     },
   },
   pages: {
-    signIn: "/sign-in", // Optional: Define the path to your custom sign-in page
+    signIn: "/sign-in",
   },
 };
 
