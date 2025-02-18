@@ -63,32 +63,34 @@ const PostCard = ({
               {/* Confirmation Modal */}
               <Dialog.Portal>
                 <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
-                <Dialog.Content className="top-1/2 left-1/2 fixed bg-white p-6 rounded-lg md:max-w-[400px] -translate-x-1/2 -translate-y-1/2 transform">
-                  <div className="text-center">
-                    <Dialog.Title className="text-xl">
-                      Please confirm if you wish to delete the post
-                    </Dialog.Title>
-                    <Dialog.Description className="mt-2 text-gray-600">
-                      Are you sure you want to delete the post? Once deleted, it
-                      cannot be recovered.
-                    </Dialog.Description>
-                  </div>
+                <Dialog.Content className="top-1/2 left-1/2 fixed p-4 w-full md:max-w-[380px] -translate-x-1/2 -translate-y-1/2 transform">
+                  <div className="bg-white p-6 rounded-lg w-full">
+                    <div className="text-center">
+                      <Dialog.Title className="text-xl">
+                        Please confirm if you wish to delete the post
+                      </Dialog.Title>
+                      <Dialog.Description className="mt-2 text-gray-600">
+                        Are you sure you want to delete the post? Once deleted,
+                        it cannot be recovered.
+                      </Dialog.Description>
+                    </div>
 
-                  <div className="flex md:flex-row flex-col justify-around gap-3 mt-4">
-                    <Button
-                      variant="destructive"
-                      onClick={handleDelete}
-                      className="bg-[#F23536] w-full md:w-max-[150px]"
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setIsModalOpen(false)}
-                      className="bg-white w-full md:w-max-[150px]"
-                    >
-                      Cancel
-                    </Button>
+                    <div className="flex md:flex-row flex-col justify-around gap-3 mt-4">
+                      <Button
+                        variant="destructive"
+                        onClick={handleDelete}
+                        className="bg-[#F23536] w-full md:w-max-[150px] text-white"
+                      >
+                        Delete
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsModalOpen(false)}
+                        className="bg-white w-full md:w-max-[150px]"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
                   </div>
                 </Dialog.Content>
               </Dialog.Portal>
