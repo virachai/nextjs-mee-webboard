@@ -2,6 +2,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import { revalidateTag } from "next/cache";
+import { CustomSession } from "@/app/lib/authOptions";
 
 interface PostPayload {
   title: string;
@@ -19,6 +20,7 @@ export async function POST(request: Request) {
     return new Response("Unauthorized: No session found", { status: 401 });
   }
 
+  const customSession = session as CustomSession;
   const { title, content, tags, username }: PostPayload = await request.json();
 
   if (!title || !content || !tags || !username) {
@@ -32,7 +34,7 @@ export async function POST(request: Request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session}`,
+        Authorization: `Bearer ${customSession}`,
       },
       body: JSON.stringify({ title, content, tags, username }),
     });

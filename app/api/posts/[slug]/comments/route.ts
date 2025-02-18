@@ -1,6 +1,7 @@
 // app/api/posts/[pid]/comments/route.ts
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
+import { CustomSession } from "@/app/lib/authOptions";
 
 interface Comment {
   id: string;
@@ -22,6 +23,8 @@ export async function POST(
     return new Response("Unauthorized: No session found", { status: 401 });
   }
 
+  const customSession = session as CustomSession;
+
   const slug = (await params).slug;
 
   if (!slug) {
@@ -41,6 +44,7 @@ export async function POST(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${customSession.accessToken}`,
       },
       body: JSON.stringify({
         username,

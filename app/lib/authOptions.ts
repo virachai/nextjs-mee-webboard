@@ -8,7 +8,7 @@ export interface ExtendedUser extends DefaultUser {
   accessToken: string;
 }
 
-interface CustomSession extends Session {
+export interface CustomSession extends Session {
   accessToken: string;
   refreshToken?: string;
   user: ExtendedUser;

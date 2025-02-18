@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
+import { CustomSession } from "@/app/lib/authOptions";
 
 const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API || "http://localhost:4000";
 
@@ -11,11 +12,13 @@ export async function GET() {
   }
 
   const username = session?.user?.name as string;
+  const customSession = session as CustomSession;
   try {
     const res = await fetch(`${baseApiUrl}/aboard/user/${username}/posts/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${customSession.accessToken}`,
       },
       next: { tags: ["api-user-posts"] },
     });
