@@ -37,7 +37,6 @@ export default function PostList({ endpoint }: PostListProps) {
       }
     };
     fetchPosts();
-    console.log("PostList endpoint ", endpoint);
   }, [endpoint]);
 
   const handleDelete = async (postId: string) => {
