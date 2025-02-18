@@ -64,7 +64,8 @@ export default function PostList({ endpoint }: { endpoint?: string }) {
   if (error) {
     return (
       <div className="flex justify-center bg-white mt-8 rounded-xl min-h-screen">
-        <h2 className="py-8">Error: {error}</h2>
+        {/* <h2 className="py-8">Error: {error}</h2> */}
+        <h2 className="py-8">Not Found</h2>
       </div>
     );
   }
