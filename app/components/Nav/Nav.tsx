@@ -31,11 +31,13 @@ export default async function Nav() {
 
       <div className="flex items-center gap-x-8">
         <MobileNavbar />
-        {session?.user?.name ? (
-          <span className="text-white">{session?.user?.name}</span> // Display user name from session
-        ) : (
-          <span className="text-white">Guest</span> // Fallback when no session is available
-        )}
+        <div className="-mr-4">
+          {session?.user?.name ? (
+            <span className="text-white">{session?.user?.name}</span> // Display user name from session
+          ) : (
+            <span className="text-white">Guest</span> // Fallback when no session is available
+          )}
+        </div>
         <UserButton />
       </div>
     </nav>
