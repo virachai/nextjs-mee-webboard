@@ -2,7 +2,7 @@
 
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Check } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 interface MenuItem {
@@ -21,10 +21,15 @@ export const tagData: MenuItem[] = [
 ];
 
 const CommunityDropdown = () => {
-  const [selectedItem, setSelectedItem] = useState<string>("Community");
   const searchParams = useSearchParams();
+  const tagFromURL = searchParams.get("tag") || "Community";
+  const [selectedItem, setSelectedItem] = useState<string>(tagFromURL);
   const pathname = usePathname();
   const { replace } = useRouter();
+
+  useEffect(() => {
+    setSelectedItem(tagFromURL);
+  }, [tagFromURL]);
 
   const handleSelect = (itemId: string) => {
     const newSelectedItem = selectedItem === itemId ? "Community" : itemId;
