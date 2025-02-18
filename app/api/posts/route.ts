@@ -22,7 +22,6 @@ export async function POST(request: Request) {
 
   const customSession = session as CustomSession;
   const { title, content, tags, username }: PostPayload = await request.json();
-  console.log("tags", tags);
 
   if (!title || !content || !tags || !username) {
     return new Response("Bad Request: Missing required fields", {
@@ -35,7 +34,7 @@ export async function POST(request: Request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${customSession.accessToken}`,
+        Authorization: `Bearer ${customSession?.accessToken}`,
       },
       body: JSON.stringify({ title, content, tags, username }),
     });

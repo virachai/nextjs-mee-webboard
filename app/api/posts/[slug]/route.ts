@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
 import { revalidateTag } from "next/cache";
+import { CustomSession } from "@/app/lib/authOptions";
 
 interface PostPayload {
   title: string;
@@ -22,6 +23,7 @@ export async function PUT(
     return new Response("Unauthorized: No session found", { status: 401 });
   }
 
+  const customSession = session as CustomSession;
   const slug = (await params).slug;
   const { title, content }: PostPayload = await request.json();
 
@@ -36,6 +38,7 @@ export async function PUT(
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${customSession?.accessToken}`,
       },
       body: JSON.stringify({ title, content }),
     });
@@ -70,6 +73,7 @@ export async function DELETE(
     return new Response("Unauthorized: No session found", { status: 401 });
   }
 
+  const customSession = session as CustomSession;
   const slug = (await params).slug;
 
   if (!slug) {
@@ -81,6 +85,7 @@ export async function DELETE(
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${customSession?.accessToken}`,
       },
     });
 
