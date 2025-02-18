@@ -30,14 +30,16 @@ export default async function Nav() {
       </Link>
 
       <div className="flex justify-end items-center gap-x-8 min-w-[250px]">
-        <div className="-mr-5">
+        <div className="-mr-3">
           {session?.user?.name ? (
             <span className="text-white">{session?.user?.name}</span>
           ) : (
             <span className="text-white">Guest</span>
           )}
         </div>
-        <UserButton />
+        <div className="-mr-3 md:mr-0">
+          <UserButton />
+        </div>
         <MobileNavbar />
       </div>
     </nav>

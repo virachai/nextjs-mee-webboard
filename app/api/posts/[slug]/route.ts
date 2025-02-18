@@ -25,9 +25,9 @@ export async function PUT(
 
   const customSession = session as CustomSession;
   const slug = (await params).slug;
-  const { title, content }: PostPayload = await request.json();
+  const { title, content, tags }: PostPayload = await request.json();
 
-  if (!title || !content) {
+  if (!title || !content || !tags) {
     return new Response("Bad Request: Missing required fields", {
       status: 400,
     });
@@ -40,7 +40,7 @@ export async function PUT(
         "Content-Type": "application/json",
         Authorization: `Bearer ${customSession?.accessToken}`,
       },
-      body: JSON.stringify({ title, content }),
+      body: JSON.stringify({ title, content, tags }),
     });
 
     if (!res.ok) {
