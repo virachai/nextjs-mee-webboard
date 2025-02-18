@@ -50,7 +50,7 @@ const CommentsSection = ({ postId }: CommentsSectionProps) => {
     };
 
     fetchComments();
-  }, [postId]); // Only fetch comments if postId changes
+  }, [postId, isFormVisible]); // Only fetch comments if postId changes
 
   if (loading) {
     return (
@@ -76,7 +76,11 @@ const CommentsSection = ({ postId }: CommentsSectionProps) => {
 
       {/* Show CommentAction with the form/modal based on the state */}
       {isFormVisible && (
-        <CommentAction isFormVisible={isFormVisible} toggleForm={toggleForm} />
+        <CommentAction
+          isFormVisible={isFormVisible}
+          toggleForm={toggleForm}
+          slug={postId}
+        />
       )}
 
       {/* Pass the fetched comments to CommentList */}

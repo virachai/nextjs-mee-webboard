@@ -1,11 +1,10 @@
 // app/api/posts/[pid]/comments/route.ts
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
-// import { NextResponse } from "next/server";
-// import type { NextApiRequest, NextApiResponse } from "next";
 
 interface Comment {
   id: string;
+  title?: string;
   username: string;
   content: string;
   createdAt: string;
@@ -46,6 +45,7 @@ export async function POST(
       body: JSON.stringify({
         username,
         content,
+        title: session?.user?.image || slug,
       }),
     });
 

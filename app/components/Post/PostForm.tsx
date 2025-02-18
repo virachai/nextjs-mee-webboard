@@ -248,7 +248,7 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
             placeholder="What's on your mind..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 w-full min-h-[200px]"
+            className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 w-full min-h-[200px] resize-none"
             required
             aria-label="Post Content"
           />
@@ -258,7 +258,7 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
             <button
               type="button"
               onClick={onClose}
-              className="hover:bg-gray-50 px-6 py-2 border rounded-lg text-gray-600 transition-colors"
+              className="hover:bg-gray-50 px-6 py-2 border rounded-lg min-w-[120px] text-gray-600 transition-colors"
             >
               Cancel
             </button>
@@ -266,7 +266,7 @@ const PostForm = ({ slug, onClose }: PostFormProps) => {
               type="submit"
               className={`${
                 isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-green-500"
-              } hover:bg-green-600 px-6 py-2 rounded-lg text-white transition-colors`}
+              } hover:bg-green-600 px-6 py-2 rounded-lg text-white transition-colors min-w-[120px]`}
               disabled={isLoading}
               aria-label={isLoading ? "Saving..." : slug ? "Confirm" : "Post"}
             >
