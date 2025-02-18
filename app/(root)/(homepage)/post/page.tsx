@@ -13,8 +13,8 @@ export default async function Page(props: {
   const query = searchParams?.query || "";
   const page = searchParams?.page || "1";
   const tag = searchParams?.tag || "";
-  const endpoint = `/api/posts?query=${query}&page=${page}&tag=${tag}`;
   const session = await getServerSession(authOptions);
+  const endpoint = `/api/our-blog?query=${query}&page=${page}&tag=${tag}`;
 
   return (
     <div>
