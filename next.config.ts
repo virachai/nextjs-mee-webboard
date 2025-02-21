@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    ppr: "incremental",
+    taint: true,
+  },
   compress: false,
   images: {
     unoptimized: true,

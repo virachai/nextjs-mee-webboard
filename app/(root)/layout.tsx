@@ -2,6 +2,8 @@ import Nav from "@/app/components/Nav/Nav";
 import SideNav from "@/app/components/ui/homepage/sidenav";
 import { Metadata } from "next";
 
+export const experimental_ppr = true;
+
 export const metadata: Metadata = {
   title: "a Board",
 };

@@ -4,6 +4,8 @@ import { authOptions } from "@/app/lib/authOptions";
 import { revalidateTag } from "next/cache";
 import { CustomSession } from "@/app/lib/authOptions";
 
+export const experimental_ppr = true;
+
 interface PostPayload {
   title: string;
   content: string;
